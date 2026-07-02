@@ -25,7 +25,30 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: SonarQube Scan
+      - name: Verify environment
+        shell: cmd
         run: |
-          sonar-scanner -Dsonar.token="${{ secrets.SONAR_TOKEN }}" -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}"
-        shell: powershell
+          echo HOST=%SONAR_HOST_URL%
+          if "%SONAR_TOKEN%"=="" (
+            echo TOKEN EMPTY
+          ) else (
+            echo TOKEN FOUND
+          )
+
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          sonar-scanner -Dsonar.token="%SONAR_TOKEN%" -Dsonar.host.url="%SONAR_HOST_URL%"
+        shell: cmd
+      
+      - name: Verify environment
+        shell: cmd
+        run: |
+          echo HOST=%SONAR_HOST_URL%
+          if "%SONAR_TOKEN%"=="" (
+            echo TOKEN EMPTY
+          ) else (
+            echo TOKEN FOUND
+          )
