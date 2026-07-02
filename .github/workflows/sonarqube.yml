@@ -40,15 +40,11 @@ jobs:
 
       - name: SonarQube Scan
         run: |
-          sonar-scanner.bat -D"sonar.projectKey=BrayanTaller-sast" -D"sonar.sources=." -D"sonar.host.url=%SONAR_HOST_URL%" -D"sonar.login=%SONAR_TOKEN%"
+          sonar-scanner.bat ^
+            -D"sonar.projectKey=BrayanTaller-sast" ^
+            -D"sonar.sources=." ^
+            -D"sonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/coverage/**" ^
+            -D"sonar.host.url=%SONAR_HOST_URL%" ^
+            -D"sonar.login=%SONAR_TOKEN%"
         shell: cmd
-      
-      - name: Verify environment
-        shell: cmd
-        run: |
-          echo HOST=%SONAR_HOST_URL%
-          if "%SONAR_TOKEN%"=="" (
-            echo TOKEN EMPTY
-          ) else (
-            echo TOKEN FOUND
-          )
+
