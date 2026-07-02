@@ -25,11 +25,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install SonarQube Scanner
-        run: |
-          choco install sonarscanner -y
-        shell: powershell
-
       - name: SonarQube Scan
         run: |
           sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
