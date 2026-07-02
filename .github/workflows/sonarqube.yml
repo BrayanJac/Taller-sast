@@ -9,6 +9,9 @@ jobs:
   sonarqube:
     name: SonarQube Scan
     runs-on: self-hosted
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
     steps:
       - name: Checkout code
@@ -36,11 +39,8 @@ jobs:
           )
 
       - name: SonarQube Scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
-          sonar-scanner -Dsonar.token="%SONAR_TOKEN%" -Dsonar.host.url="%SONAR_HOST_URL%"
+          sonar-scanner.bat -D"sonar.projectKey=BrayanTaller-sast" -D"sonar.sources=." -D"sonar.host.url=%SONAR_HOST_URL%" -D"sonar.login=%SONAR_TOKEN%"
         shell: cmd
       
       - name: Verify environment
